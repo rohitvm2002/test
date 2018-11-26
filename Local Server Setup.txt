@@ -1,3 +1,5 @@
+Modified by Rohit1
+
 Local host Setup:
 =================
 Apache Solr Path: /usr/local/Cellar/solr/7.3.1/server/solr
