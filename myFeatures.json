@@ -1,0 +1,15 @@
+
+[
+{ 
+   "store" : "myDeveloperFeatureStore",
+  "name": "isBook",
+  "class": "org.apache.solr.ltr.feature.SolrFeature",
+  "params":{ "fq": ["{!terms f=type}SC"] }
+},
+{
+  "store" : "myDeveloperFeatureStore",
+  "name":"originalScore",
+  "class":"org.apache.solr.ltr.feature.OriginalScoreFeature",
+  "params":{}
+}
+]  

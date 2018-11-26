@@ -1,0 +1,16 @@
+{
+    "class":"org.apache.solr.ltr.model.LinearModel",
+    "name":"salesModel",
+    "features":[
+        { "name": "originalScore"},
+        { "name": "type"},
+   
+    ],
+    "params":{
+        "weights": {
+            "originalScore": 0.6421,
+            
+            "type": 3.017
+      }
+    }
+}

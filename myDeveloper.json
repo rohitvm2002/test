@@ -1,0 +1,17 @@
+{
+  "class" : "org.apache.solr.ltr.model.LinearModel",
+  "name" : "myEfiFeatureModel",
+  "store":"myEfiFeatureStore"
+  "features" : [
+    { "name" : "isPreferredType" },
+    { "name" : "userFromMobileValue" },
+    { "name" : "originalScore" }
+  ],
+  "params" : {
+    "weights" : {
+      "isPreferredType" : 1.0,
+      "userFromMobileValue" : 0.1,
+      "originalScore" : 0.5
+    }
+  }
+}

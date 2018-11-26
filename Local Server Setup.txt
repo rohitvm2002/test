@@ -1,0 +1,98 @@
+Local host Setup:
+=================
+Apache Solr Path: /usr/local/Cellar/solr/7.3.1/server/solr
+Zoo keeper installation path: /usr/local/Cellar/zookeeper/3.4.12
+
+
+Create own config set
+=====================
+creating collection using existing config set
+
+1) Dev Solr
+curl "http://10.15.208.58:8983/solr/admin/collections?action=CREATE&name=Rohit&numShards=2&replicationFactor=3&maxShardsPerNode=2&collection.configName=SnowMysql”
+http://sjc4lsurfd01:8983/solr/admin/collections?action=CREATE&name=Rohit&numShards=2&replicationFactor=1&maxShardsPerNode=1&collection.configName=Rohit
+To download configu set files from zoomkeept to VM
+
+###  ./solr zk downconfig -n rohitconfig -d /data/snowsearch/configset/rohitconfig -z 10.15.208.58:2181
+
+2) To Download Config
+
+sudo ./solr zk -z 10.15.11.244:2181,10.15.11.245:2181,10.15.11.247:2181 downconfig -d /data/snowsearch/configset/SnowWebsite/ -n DocWebsite
+
+3) To Upload (New updated config set) config: 
+ 
+./solr zk -z 10.15.11.244:2181,10.15.11.245:2181,10.15.11.247:2181 upconfig -d /data/snowsearch/configset/RohitConfig/ -n RohitConfig
+
+./solr zk -z 10.15.11.244:2181,10.15.11.245:2181,10.15.11.247:2181 upconfig -d /data/snowsearch/configset/OKTA/ -n OKTA
+
+./solr zk -z 10.15.11.244:2181,10.15.11.245:2181,10.15.11.247:2181 upconfig -d /data/snowsearch/configset/DocWebsite -n snowcrawler
+
+./solr zk -z sjc4solrdl01:2181,sjc4solrdl02:2181,sjc4solrdl03:2181 upconfig -d /data/snowsearch/configset/DocWebsite -n DocWebsite
+
+./solr zk -z sjc4lsurfd03:2181,sjc4lsurfd03:2182,sjc4lsurfd03:2183 upconfig -d /data/snowsearch/configset/ProdConfig19-10/ -n DocWebsite
+ 
+
+
+/data/snowsearch/nutchRohit/bin/nutch index -Dsolr.server.url=http://solr:SolrRocks@localhost:8983/solr/snowcrawler /data/snowsearch/nutchRohit/crawl/crawldb/ -linkdb /data/snowsearch/nutchRohit/crawl/linkdb/ /data/snowsearch/nutchRohit/crawl/segments/*/ -filter -normalize -deleteGone
+
+D03 Server:::::::::::::;
+sjc4lsurfd03:2181,sjc4lsurfd03:2182,sjc4lsurfd03:2183
+http://sjc4lsurfd03
+
+./solr zk -z sjc4lsurfd03:2181,sjc4lsurfd03:2182,sjc4lsurfd03:2183 upconfig -d /data/snowsearch/configset/DocWebsite -n DocWebsite
+10.15.208.90:8985
+
+PRO
+
+req.setBasicAuthCredentials(values.getProperty("solr.userid"), values.getProperty("solr.password"));
+
+
+ 
+
+http://10.15.11.244:8983/solr/admin/collections?action=CREATE&name=SnowWebsite&numShards=1&replicationFactor=1
+
+
+DELETE Collection index:
+========================
+1) Curl Command to enable deletion of index from browser
+
+curl --user solr:SolrRocks http://localhost:8983/solr/snowcrawler/config -H 'Content-type:application/json' -d'{ "set-property" :{"requestDispatcher.requestParsers.enableRemoteStreaming":true},"set-property" : {"requestDispatcher.requestParsers.enableStreamBody":true}}'
+
+2) http://localhost:8983/solr/snowcrawler/update?commit=true&stream.body=%3Cdelete%3E%3Cquery%3Etype:WEB&q=soap%3C/query%3E%3C/delete%3E
+
+3) Delete all documents
+http://10.15.11.244:8983/solr/DocWebsite/update?commit=true&stream.body=%3Cdelete%3E%3Cquery%3E!type:WEB%3C/query%3E%3C/delete%3E
+http://10.15.11.244:8983/solr/snowcrawler/update?commit=true&stream.body=%3Cdelete%3E%3Cquery%3E*:*%3C/query%3E%3C/delete%3E
+
+Server Addresses
+================
+DEV Linux Server: sjc4lsurfd01:22
+Jump Server Address: SJC4JSP01
+
+
+UAT Servers:
+
+dal20lsurft03 tomcat
+dal20lsurft02 solr
+
+http://localhost:8983/solr/collection2/dataimport-mysql?command=full-import&clean=true
+
+
+4) Delete War file folder in WEBAPPS
+
+ rm -rf /data/snowsearch/tomcat/webapps/globalSearch
+
+5) ps -ef | grep tomcat Check tomcat status
+
+
+
+./solr zk -z 10.15.208.80:2281,10.15.208.83:2281,10.15.208.84:2281 upconfig -d /data/snowsearch/configset/ProdConfig19-10/ -n servicenow
+
+
+
+
+
+
+
+
+
